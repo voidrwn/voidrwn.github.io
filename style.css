@@ -79,32 +79,72 @@ h2 {
   color: #4a6f6f;
 }
 
-.skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+  padding: 0;
 }
 
-.skills li {
-  background: #bffcfb; /* secondary */
-  padding: 6px 12px;
-  border-radius: 4px;
+.keyboard li {
   list-style: none;
-  font-size: 14px;
+  background: #bffcfb; /* secondary */
   color: #005f5f;
-  transition: background 0.2s ease, color 0.2s ease;
+  padding: 14px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  cursor: default;
+
+  /* keyboard effect */
+  box-shadow:
+    0 4px 0 #58bab9,
+    0 6px 12px rgba(0, 128, 128, 0.15);
+
+  transform: translateY(0);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
-.skills li:hover {
+/* icon */
+.keyboard li::before {
+  content: attr(data-icon);
+  display: block;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+/* hover / press */
+.keyboard li:hover {
   background: #ff8749; /* accent */
   color: #ffffff;
+  box-shadow:
+    0 2px 0 #8b1c00,
+    0 4px 8px rgba(139, 28, 0, 0.25);
+  transform: translateY(2px);
 }
 
-.tech {
-  font-weight: 500;
-  color: #008080;
+/* pressed feel */
+.keyboard li:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 1px 0 #8b1c00;
 }
 
+/* compact keyboard (tech section) */
+.keyboard.compact {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.keyboard.compact li {
+  font-size: 13px;
+  padding: 12px 10px;
+}
 footer {
   text-align: center;
   padding: 20px;
@@ -112,4 +152,5 @@ footer {
   color: #8b1c00; /* accent 2 */
   font-size: 14px;
 }
+
 
