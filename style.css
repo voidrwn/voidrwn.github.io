@@ -1,14 +1,14 @@
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   margin: 0;
-  background: #f5f7fa;
-  color: #222;
+  background: #e6f4f1; /* neutral */
+  color: #1f2f2f;
   line-height: 1.7;
 }
 
 header {
-  background: #0f172a;
-  color: #fff;
+  background: #008080; /* dominant */
+  color: #ffffff;
   padding: 50px 20px;
   text-align: center;
 }
@@ -16,6 +16,7 @@ header {
 .subtitle {
   opacity: 0.9;
   margin-top: 8px;
+  color: #bffcfb; /* secondary */
 }
 
 .header-actions {
@@ -29,30 +30,44 @@ header {
   border-radius: 5px;
   text-decoration: none;
   font-weight: 600;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
+/* Primary CTA */
 .primary {
-  background: #2563eb;
-  color: #fff;
+  background: #ff8749; /* accent */
+  color: #ffffff;
 }
 
+.primary:hover {
+  background: #8b1c00; /* accent 2 */
+}
+
+/* Secondary Button */
 .secondary {
-  background: #e5e7eb;
-  color: #111;
+  background: #bffcfb; /* secondary */
+  color: #005f5f;
+}
+
+.secondary:hover {
+  background: #58bab9; /* dominant 2 */
+  color: #ffffff;
 }
 
 section {
-  background: #fff;
+  background: #ffffff;
   max-width: 900px;
   margin: 25px auto;
   padding: 25px;
   border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 128, 128, 0.08);
 }
 
 h2 {
   margin-top: 0;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid #58bab9; /* dominant 2 */
   padding-bottom: 6px;
+  color: #008080;
 }
 
 .item {
@@ -61,7 +76,7 @@ h2 {
 
 .meta {
   font-size: 14px;
-  color: #555;
+  color: #4a6f6f;
 }
 
 .skills {
@@ -71,20 +86,30 @@ h2 {
 }
 
 .skills li {
-  background: #e5e7eb;
+  background: #bffcfb; /* secondary */
   padding: 6px 12px;
   border-radius: 4px;
   list-style: none;
   font-size: 14px;
+  color: #005f5f;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.skills li:hover {
+  background: #ff8749; /* accent */
+  color: #ffffff;
 }
 
 .tech {
   font-weight: 500;
+  color: #008080;
 }
 
 footer {
   text-align: center;
   padding: 20px;
-  color: #666;
+  background: #ffe7d4; /* secondary 2 */
+  color: #8b1c00; /* accent 2 */
   font-size: 14px;
 }
+
