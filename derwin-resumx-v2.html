@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Derwin Crisologo Jr.</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c-bg: #000000;
+    --c-surface: #1d1d1d;
+    --c-muted: #242424;
+    --c-raised: #333333;
+    --c-border: rgba(255,255,255,0.08);
+    --c-border-hover: rgba(255,255,255,0.16);
+    --c-text-primary: #ffffff;
+    --c-text-secondary: #eeeeee;
+    --c-text-muted: #999999;
+    --radius: 8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+body{
+    background:var(--c-surface);
+    color:var(--c-text-primary);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    font-size:16px;
+    font-weight:600;
+    display:flex;justify-content:center;
+    min-height:100vh;
+    overflow:auto;
+    padding:24px 0;
+  }
+  .wrapper{max-width:1200px;width:1200px;display:flex;background:var(--c-bg);overflow:hidden;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{
+    width:500px;min-width:500px;
+    border-right:1px solid var(--c-border);
+    padding:32px 100px 32px 36px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    min-height:100vh;
+  }
+  .sidebar-content{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:24px;}
+  .sidebar::-webkit-scrollbar{width:0;}
+
+  .avatar{
+    width:72px;height:72px;border-radius:50%;
+    background:var(--c-raised);
+    border:1.5px solid var(--c-border);
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;font-weight:800;color:var(--c-text-secondary);
+    letter-spacing:-0.03em;flex-shrink:0;
+  }
+  .name-row{display:flex;align-items:center;gap:8px;margin-top:10px;}
+  .sidebar-name{font-size:25px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;}
+  .verified{width:18px;height:18px;border-radius:50%;background:#3b82f6;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .verified svg{width:10px;height:10px;}
+  .pronouns{font-size:15px;font-weight:500;color:var(--c-text-muted);margin-top:4px;}
+
+  .sb-label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-text-muted);margin-bottom:10px;}
+  .sb-about{font-size:14.5px;font-weight:400;color:var(--c-text-secondary);line-height:1.5;letter-spacing:-.01em;}
+
+  /* Contact list (sidebar) */
+  .sb-contact-list{display:flex;flex-direction:column;gap:5px;}
+.sb-contact-item{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:400;color:var(--c-text-secondary);text-decoration:none;transition:color 150ms;line-height:1.75;}
+  .sb-contact-item:hover{color:var(--c-text-primary);}
+  .sb-ci-icon{width:14px;height:14px;}
+
+  .skills-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+  .skill-tag{border:1px solid var(--c-border);border-radius:4px;padding:6px 12px;font-size:14.5px;font-weight:500;color:var(--c-text-secondary);background:transparent;transition:border-color 150ms,color 150ms;cursor:default;}
+  .skill-tag:hover{border-color:var(--c-border-hover);color:var(--c-text-primary);}
+
+  /* Languages */
+  .lang-list{display:flex;flex-wrap:wrap;gap:8px;}
+  .lang-item{display:flex;align-items:center;gap:5px;font-size:14.5px;font-weight:500;color:var(--c-text-secondary);}
+  .lang-flag{font-size:14.5px;line-height:1;}
+
+  /* Technologies grid */
+  .tools-grid{display:flex;flex-wrap:wrap;gap:8px;}
+  .tool-item{width:36px;height:36px;border-radius:50%;background:var(--c-surface);border:1px solid var(--c-border);display:flex;align-items:center;justify-content:center;cursor:default;transition:border-color 150ms,background 150ms;overflow:hidden;}
+  .tool-item:hover{border-color:var(--c-border-hover);background:var(--c-muted);}
+  .tool-item img{max-width:22px;max-height:22px;object-fit:contain;}
+
+  /* Social */
+  .social-row{display:flex;align-items:center;justify-content:center;gap:14px;padding:14px 0;position:sticky;bottom:40px;background:var(--c-bg);border-top:1px solid var(--c-border);margin-top:auto;}
+  .social-link{color:var(--c-text-muted);transition:color 150ms;display:flex;align-items:center;}
+  .social-link:hover{color:var(--c-text-primary);}
+  .social-link svg{width:23px;height:23px;}
+
+  /* ── MAIN ── */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;min-height:100vh;position:relative;overflow:hidden;}
+
+  /* Sticky gradient blur below tabs */
+  .main::before{content:'';position:absolute;bottom:36px;left:0;right:0;height:calc(36vh - 36px);background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.85));pointer-events:none;z-index:15;}
+
+  /* ── RIGHT TABS (bottom horizontal) ── */
+  .right-tabs{
+    position:absolute;bottom:96px;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:row;gap:2px;
+    background:var(--c-surface);
+    border:1px solid var(--c-border);
+    border-radius:28px;
+    overflow:hidden;
+    z-index:20;
+    padding:6px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.4);z-index:25;
+  }
+  .rtab{
+    padding:10px 16px;
+    font-size:13px;font-weight:600;letter-spacing:.05em;
+    color:var(--c-text-muted);
+    cursor:pointer;
+    transition:background 150ms,color 150ms;
+    border:none;background:transparent;
+    white-space:nowrap;
+    user-select:none;
+    display:flex;align-items:center;gap:4px;
+    border-radius:22px;
+  }
+  .rtab:hover{background:var(--c-surface);color:var(--c-text-secondary);}
+  .rtab.active{background:transparent;color:var(--c-text-primary);}
+  .rtab svg{width:21px;height:21px;}
+
+  /* ── CONTENT AREA ── */
+  .content-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:32px 120px 150px 48px;position:relative;}
+
+  .wrapper{max-width:1200px;width:100%;display:flex;}
+  .content-area::-webkit-scrollbar{width:4px;}
+  .content-area::-webkit-scrollbar-track{background:transparent;}
+  .content-area::-webkit-scrollbar-thumb{background:var(--c-raised);border-radius:2px;}
+
+  /* ── SECTIONS ── */
+  .section{display:flex;flex-direction:column;gap:10px;padding-top:12px;padding-bottom:16px;border-bottom:1px solid var(--c-border);}
+  .section.active{display:flex;}
+
+  .section-heading{
+    font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--c-text-muted);padding-bottom:12px;
+    border-bottom:1px solid var(--c-border);
+  }
+
+  /* Intro */
+  .intro-text{font-size:14.5px;font-weight:500;color:var(--c-text-secondary);line-height:1.5;letter-spacing:-.01em;}
+
+  /* ── CAROUSEL ── */
+  .carousel-wrap{position:relative;margin-right:-120px;}
+  .carousel-track-outer{overflow:hidden;border-radius:var(--radius);}
+  .carousel-track{display:flex;gap:12px;transition:transform 350ms cubic-bezier(.4,0,.2,1);will-change:transform;}
+  .carousel-card{
+    width:calc(50% - 6px);
+    min-width:calc(50% - 6px);
+    background:rgba(29,29,29,0.5);border:1px solid var(--c-border);border-radius:var(--radius);
+    overflow:hidden;cursor:pointer;transition:border-color 200ms;flex-shrink:0;
+    display:flex;flex-direction:column;
+  }
+  .carousel-card:hover{border-color:var(--c-border-hover);}
+  .c-thumb{width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;}
+  .c-thumb-pattern{position:absolute;inset:0;opacity:.12;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.3) 0px,rgba(255,255,255,.3) 1px,transparent 1px,transparent 12px);}
+  .thumb-orange{background:#e8956a;}
+  .thumb-purple{background:#8b6ec4;}
+  .thumb-teal{background:#4eaF8e;}
+  .thumb-blue{background:#4a88cc;}
+  .c-info{padding:14px;flex:1;}
+  .c-logo-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .c-logo{width:28px;height:28px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+  .c-logo-red{background:#c0392b;} .c-logo-blue{background:#2980b9;} .c-logo-green{background:#27ae60;} .c-logo-purple{background:#7b3fa0;}
+  .c-name{font-size:15px;font-weight:700;color:var(--c-text-primary);font-family:inherit;}
+  .c-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px;}
+  .c-tag{display:flex;align-items:center;gap:4px;font-size:14.5px;font-weight:500;color:var(--c-text-muted);font-family:inherit;}
+  .c-tag svg{width:11px;height:11px;opacity:.6;}
+
+  .carousel-nav{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+  .carousel-dots{display:flex;gap:6px;align-items:center;}
+  .cdot{width:6px;height:6px;border-radius:50%;background:var(--c-raised);transition:background 200ms,width 200ms;cursor:pointer;}
+  .cdot.active{background:var(--c-text-muted);width:16px;border-radius:3px;}
+  .carousel-btns{display:flex;gap:6px;}
+  .carousel-btn{
+    width:28px;height:28px;border-radius:6px;background:var(--c-surface);border:1px solid var(--c-border);
+    color:var(--c-text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:border-color 150ms,color 150ms,background 150ms;
+  }
+  .carousel-btn:hover{border-color:var(--c-border-hover);color:var(--c-text-primary);background:var(--c-muted);}
+  .carousel-btn svg{width:14px;height:14px;}
+
+  /* ── EXPERIENCE / EDUCATION (detailed cards) ── */
+  .item-list{display:flex;flex-direction:column;gap:10px;}
+
+  .item-card{
+    display:flex;align-items:flex-start;gap:14px;
+    background:rgba(29,29,29,0.5);border:1px solid var(--c-border);border-radius:var(--radius);
+    padding:14px;cursor:default;transition:border-color 200ms,background 200ms;
+  }
+  .item-card:hover{border-color:var(--c-border-hover);background:var(--c-muted);}
+
+  .item-logo{
+    width:38px;height:38px;border-radius:9px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;color:#fff;letter-spacing:-.02em;
+  }
+  .il-red{background:#c0392b;} .il-orange{background:#e07c30;} .il-blue{background:#2980b9;} .il-teal{background:#16a085;} .il-purple{background:#7b3fa0;} .il-gold{background:#b8860b;}
+
+  .item-body{flex:1;min-width:0;}
+  .item-top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+  .item-role{font-size:15px;font-weight:700;color:var(--c-text-primary);line-height:1.3;margin-bottom:3px;}
+  .item-meta-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+  .item-meta{display:flex;align-items:center;gap:4px;font-size:14.5px;font-weight:500;color:var(--c-text-muted);}
+  .item-meta svg{width:11px;height:11px;opacity:.55;}
+  .item-desc{font-size:14.5px;font-weight:400;color:var(--c-text-muted);line-height:1.5;}
+
+  /* ── CERTIFICATIONS ── */
+  .cert-list{display:flex;flex-direction:column;gap:10px;}
+  .cert-card{
+    display:flex;align-items:center;gap:12px;
+    background:rgba(29,29,29,0.5);border:1px solid var(--c-border);border-radius:var(--radius);
+    padding:14px;transition:border-color 200ms,background 200ms;cursor:default;
+  }
+  .cert-card:hover{border-color:var(--c-border-hover);background:var(--c-muted);}
+  .cert-icon{width:38px;height:38px;border-radius:9px;background:var(--c-raised);border:1px solid var(--c-border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;}
+  .cert-body{flex:1;min-width:0;}
+  .cert-name{font-size:15px;font-weight:700;color:var(--c-text-primary);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cert-issuer{font-size:14.5px;font-weight:500;color:var(--c-text-muted);line-height:1.5;}
+  .cert-date{font-size:14.5px;font-weight:500;color:var(--c-text-muted);white-space:nowrap;flex-shrink:0;}
+
+  /* ── WORK METHOD ── */
+  .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .method-card{background:rgba(29,29,29,0.5);border:1px solid var(--c-border);border-radius:var(--radius);padding:14px;transition:border-color 200ms;}
+  .method-card:hover{border-color:var(--c-border-hover);}
+  .method-icon{font-size:22px;margin-bottom:10px;}
+  .method-title{font-size:15px;font-weight:700;color:var(--c-text-primary);margin-bottom:4px;}
+  .method-desc{font-size:14.5px;font-weight:400;color:var(--c-text-muted);line-height:1.5;}
+
+  /* ── ORGANIZATIONS ── */
+  .org-list{display:flex;flex-direction:column;gap:4px;}
+  .org-card{display:flex;align-items:center;gap:12px;background:rgba(29,29,29,0.5);border:1px solid var(--c-border);border-radius:var(--radius);padding:14px 16px;transition:border-color 200ms;}
+  .org-card:hover{border-color:var(--c-border-hover);}
+  .org-ticker{overflow:hidden;border-radius:var(--radius);background:rgba(29,29,29,0.5);padding:16px 0;border:1px solid var(--c-border);}
+  .ticker-track{display:flex;gap:24px;width:max-content;}
+  .ticker-logo{display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .ticker-logo span{width:70px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;}
+
+  .ticker-track{animation:scroll 20s linear infinite;}
+  @keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+  .org-logo{width:34px;height:34px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--c-raised);border:1px solid var(--c-border);}
+  .org-body{flex:1;min-width:0;}
+  .org-name{font-size:12.5px;font-weight:700;color:var(--c-text-primary);margin-bottom:2px;}
+  .org-role{font-size:13px;font-weight:500;color:var(--c-text-muted);}
+  .org-date{font-size:13px;color:var(--c-text-muted);white-space:nowrap;flex-shrink:0;}
+
+  /* ── CONTACT (full table layout) ── */
+  .contact-section-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c-text-muted);margin-bottom:8px;margin-top:8px;}
+  .contact-table{width:100%;border-collapse:collapse;}
+  .contact-table tr{border-bottom:1px solid var(--c-border);}
+  .contact-table tr:last-child{border-bottom:none;}
+  .contact-table td{padding:10px 0;font-size:14.5px;line-height:1.4;vertical-align:middle;}
+  .contact-table td:first-child{font-size:15px;font-weight:700;color:var(--c-text-primary);width:130px;}
+  .contact-table td:last-child{font-weight:400;color:var(--c-text-muted);text-align:right;}
+  .contact-table a{color:var(--c-text-muted);text-decoration:none;transition:color 150ms;}
+  .contact-table a:hover{color:var(--c-text-primary);}
+.btn-download{display:inline-block;padding:6px 14px;background:var(--c-primary);color:var(--c-bg) !important;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;transition:opacity 150ms;}
+.btn-download:hover{opacity:.85;}
+  .contact-block{background:rgba(29,29,29,0.5);border:1px solid var(--c-border);border-radius:var(--radius);padding:4px 20px;}
+
+  @media(max-width:800px){
+    .sidebar{display:none;}
+    .content-area{padding:24px 52px 80px 20px;}
+    .right-tabs{margin-right:4px;}
+    .carousel-card{min-width:calc(100% - 0px);}
+    .method-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-content">
+    <div>
+      <div class="avatar">DC</div>
+      <div class="name-row">
+        <span class="sidebar-name">Derwin Crisologo Jr.</span>
+        <div class="verified">
+          <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <p class="pronouns">he/him</p>
+    </div>
+
+    <div>
+      <p class="sb-label">About</p>
+      <p class="sb-about">I build integrated operating systems that align people, processes, and data to improve efficiency, control, and scalability across organizations.</p>
+    </div>
+
+    <div>
+      <p class="sb-label">Contact</p>
+      <div class="sb-contact-list">
+        <a href="mailto:derwincrisologojr@mail.com" class="sb-contact-item">
+          <span class="sb-ci-icon"><svg viewBox="0 0 16 16" fill="none" width="14" height="14"><rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 5l7 5 7-5" stroke="currentColor" stroke-width="1.2"/></svg></span>
+          derwincrisologojr@mail.com
+        </a>
+        <a href="https://www.linkedin.com/in/derwin-crisologo-jr" target="_blank" class="sb-contact-item">
+          <span class="sb-ci-icon"><svg viewBox="0 0 16 16" fill="none" width="14" height="14"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 8c0-1.66 1.34-3 3-3s3 1.34 3 3" stroke="currentColor" stroke-width="1.2"/></svg></span>
+          LinkedIn ↗
+        </a>
+        <span class="sb-contact-item">
+          <span class="sb-ci-icon"><svg viewBox="0 0 16 16" fill="none" width="14" height="14"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.2"/></svg></span>
+          +63 905 081 4181
+        </span>
+        <span class="sb-contact-item">
+          <span class="sb-ci-icon"><svg viewBox="0 0 16 16" fill="none" width="14" height="14"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5S12.5 9.5 12.5 6c0-2.5-2-4.5-4.5-4.5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.1"/></svg></span>
+          Mandaue City
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <p class="sb-label">Skills</p>
+      <div class="skills-wrap">
+        <span class="skill-tag">Process Optimization</span>
+        <span class="skill-tag">Data Analytics</span>
+        <span class="skill-tag">BI</span>
+        <span class="skill-tag">Financial Controls</span>
+        <span class="skill-tag">FP&amp;A</span>
+        <span class="skill-tag">Operations</span>
+        <span class="skill-tag">Risk &amp; Compliance</span>
+        <span class="skill-tag">Systems Thinking</span>
+        <span class="skill-tag">Automation</span>
+        <span class="skill-tag">HR Strategy</span>
+        <span class="skill-tag">OHS</span>
+      </div>
+    </div>
+
+    <div>
+      <p class="sb-label">Technologies</p>
+      <div class="tools-grid">
+        <div class="tool-item" title="Excel"><img src="tools/Excel.svg" alt="Excel"></div>
+        <div class="tool-item" title="Power BI"><img src="tools/Power BI.svg" alt="Power BI"></div>
+        <div class="tool-item" title="Python"><img src="tools/Python.svg" alt="Python"></div>
+        <div class="tool-item" title="SQL" style="background:#444;"><img src="tools/SQLite.svg" alt="SQL"></div>
+        <div class="tool-item" title="Tableau" style="background:#444;"><img src="tools/Tableau.svg" alt="Tableau"></div>
+        <div class="tool-item" title="Canva"><img src="tools/Canva.svg" alt="Canva"></div>
+        <div class="tool-item" title="Google Data Studio"><img src="tools/Google Data Studio.svg" alt="Google Data Studio"></div>
+        <div class="tool-item" title="Google Sheets"><img src="tools/Google Sheets.svg" alt="Google Sheets"></div>
+        <div class="tool-item" title="HTML"><img src="tools/HTML.svg" alt="HTML"></div>
+        <div class="tool-item" title="CSS"><img src="tools/CSS.svg" alt="CSS"></div>
+        <div class="tool-item" title="Javascript"><img src="tools/Javascript.svg" alt="Javascript"></div>
+        <div class="tool-item" title="AI"><img src="tools/AI.svg" alt="AI"></div>
+        <div class="tool-item" title="BigQuery"><img src="tools/BigQuery.webp" alt="BigQuery"></div>
+        <div class="tool-item" title="MySQL" style="background:#444;"><img src="tools/MySQL.svg" alt="MySQL"></div>
+        <div class="tool-item" title="SQL"><img src="tools/SQL.png" alt="SQL"></div>
+      </div>
+    </div>
+
+    <div>
+      <p class="sb-label">Languages</p>
+      <div class="lang-list">
+        <span class="lang-item"><span class="lang-flag">🇵🇭</span> Filipino</span>
+        <span class="lang-item"><span class="lang-flag">🇺🇸</span> English</span>
+      </div>
+      <a href="docs/DERWIN CRISOLOGO JR.pdf" download class="btn-download" style="margin-top:10px;display:inline-flex;">Download CV</a>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- RIGHT TABS -->
+  <div class="right-tabs" id="rightTabs">
+    <button class="rtab active" data-section="intro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+    <button class="rtab" data-section="experience"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></button>
+    <button class="rtab" data-section="education"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5"/><path d="M6 12v5c0 2 2 4 6 4s6-2 6-4v-5"/></svg></button>
+    <button class="rtab" data-section="certifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></button>
+    <button class="rtab" data-section="methods"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.121 2.121 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></button>
+    <button class="rtab" data-section="organizations"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></button>
+    <button class="rtab" data-section="contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></button>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div class="content-area" id="contentArea">
+
+    <!-- 1. INTRO -->
+    <div class="section active" id="sec-intro">
+      <p class="section-heading">Intro</p>
+      <p class="intro-text">I work at the intersection of HR, finance, operations, and data—designing systems that bring structure to how organizations run. By connecting functions that are often siloed, I help reduce inefficiencies, strengthen controls, and enable better decision-making. My approach is practical and execution-focused, ensuring that improvements are not only well-designed but sustainable under real-world conditions.</p>
+    </div>
+
+    
+
+    <!-- 3. EXPERIENCE -->
+    <div class="section" id="sec-experience">
+      <p class="section-heading">Experience</p>
+      <div class="item-list">
+
+        <div class="item-card">
+          <div class="item-logo"><img src="companies/manytaskers.jfif" alt="ManyTaskers" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></div>
+          <div class="item-body">
+            <div class="item-top-row">
+              <span class="item-role">Managing Partner</span>
+            </div>
+            <div class="item-meta-row">
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Dec 2024 – Present</span>
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="2" y="2" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M4 5h4M4 7h2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>ManyTaskers</span>
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1.5C4.07 1.5 2.5 3.07 2.5 5S4.07 8.5 6 8.5 9.5 6.93 9.5 5 7.93 1.5 6 1.5z" stroke="currentColor" stroke-width="1.2"/></svg>Mactan, Lapu-Lapu City</span>
+            </div>
+            <p class="item-desc">Spearheaded business development and client acquisition through targeted market research, consultative selling, and relationship-building. Orchestrated end-to-end HR service delivery — from sourcing and onboarding to compliance management — ensuring seamless execution for all client accounts.</p>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-logo"><img src="companies/golden brew marketing inc.webp" alt="Golden Brew" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></div>
+          <div class="item-body">
+            <div class="item-top-row">
+              <span class="item-role">Finance Supervisor</span>
+            </div>
+            <div class="item-meta-row">
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Mar 2021 – Present</span>
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="2" y="2" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M4 5h4M4 7h2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Golden Brew Marketing, Inc.</span>
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1.5C4.07 1.5 2.5 3.07 2.5 5S4.07 8.5 6 8.5 9.5 6.93 9.5 5 7.93 1.5 6 1.5z" stroke="currentColor" stroke-width="1.2"/></svg>Banilad, Mandaue City</span>
+            </div>
+            <p class="item-desc">Directed core financial functions (Treasury, AR, AP, Inventory, Bookkeeping) to ensure accuracy and optimize cash flow. Managed HR, Administration & Compliance — overseeing personnel, labor law adherence, safety standards, and permit renewals. Led cross-functional teams and delivered transparent financial reporting that strengthened stakeholder trust.</p>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-logo"><img src="companies/golden brew marketing inc.webp" alt="Golden Brew" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></div>
+          <div class="item-body">
+            <div class="item-top-row">
+              <span class="item-role">HR and Admin Assistant</span>
+            </div>
+            <div class="item-meta-row">
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Mar 2020 – Feb 2021</span>
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="2" y="2" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M4 5h4M4 7h2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Golden Brew Marketing, Inc.</span>
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1.5C4.07 1.5 2.5 3.07 2.5 5S4.07 8.5 6 8.5 9.5 6.93 9.5 5 7.93 1.5 6 1.5z" stroke="currentColor" stroke-width="1.2"/></svg>Banilad, Mandaue City</span>
+            </div>
+            <p class="item-desc">Served as primary liaison between Head Office and Local Sales Office, ensuring policy alignment and seamless communication. Managed local HR functions including recruitment, onboarding, payroll/benefits administration, and employee relations. Processed clearances, exits, and industrial relations documentation.</p>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-logo" style="background:#fff;"><img src="companies/golden dragon fastcraft builder.webp" alt="Golden Dragon" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="item-body">
+            <div class="item-top-row">
+              <span class="item-role">HR Business Partner</span>
+            </div>
+            <div class="item-meta-row">
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Mar 2020 – Feb 2021</span>
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="2" y="2" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M4 5h4M4 7h2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>Golden Dragon Fast Craft Builder</span>
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1.5C4.07 1.5 2.5 3.07 2.5 5S4.07 8.5 6 8.5 9.5 6.93 9.5 5 7.93 1.5 6 1.5z" stroke="currentColor" stroke-width="1.2"/></svg>Labogon, Mandaue City</span>
+            </div>
+            <p class="item-desc">Directed revisions of company rules & regulations, aligning with evolving labor standards. Realigned salary frameworks using market data, skill, and tenure criteria to optimize costs and boost retention. Implemented succession plans and training programs informed by performance evaluation data.</p>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-logo"><img src="companies/remote.png" alt="Remote" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></div>
+          <div class="item-body">
+            <div class="item-top-row">
+              <span class="item-role">Freelance Recruiter, Logo Designer, Data Analyst & VA</span>
+            </div>
+            <div class="item-meta-row">
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Mar 2020 – Present</span>
+              <span class="item-meta">Remote</span>
+              <span class="item-meta">Remote</span>
+            </div>
+            <p class="item-desc">Provided end-to-end recruitment services, designed logos and brand identities for global clients, performed data analysis and visualization using Excel, Power BI, and Tableau, and delivered administrative support including email management, scheduling, and data entry.</p>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- 4. EDUCATION -->
+    <div class="section" id="sec-education">
+      <p class="section-heading">Education</p>
+      <div class="item-list">
+
+        <div class="item-card">
+          <div class="item-logo"><img src="school/usj-r.png" alt="USJR" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="item-body">
+            <div class="item-top-row">
+              <span class="item-role">Bachelor of Science in Psychology</span>
+            </div>
+            <div class="item-meta-row">
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Mar 2019</span>
+<span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><path d="M2 10V4l4-3 4 3v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>University of San Jose-Recoletos</span>
+              <span class="item-meta"><svg viewBox="0 0 12 12" fill="none"><path d="M6 1.5C4.07 1.5 2.5 3.07 2.5 5S4.07 8.5 6 8.5 9.5 6.93 9.5 5 7.93 1.5 6 1.5z" stroke="currentColor" stroke-width="1.2"/></svg>Cebu City, PH</span>
+               <span style="font-size:12px;font-weight:700;background:rgba(240,184,73,.12);color:#f0b849;border:1px solid rgba(240,184,73,.25);padding:2px 8px;border-radius:4px;letter-spacing:.04em;text-transform:uppercase;">Cum Laude</span>
+             </div>
+            <p class="item-desc">Graduated with Latin honors. Specialized in industrial-organizational and clinical psychology. Completed internships at Target Organizational Performance Solutions and Stages Center, Inc., bridging psychological theory with workplace and clinical application.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 5. CERTIFICATIONS -->
+    <div class="section" id="sec-certifications">
+      <p class="section-heading">Certifications</p>
+      <div class="cert-list">
+        <div class="cert-card">
+          <div class="cert-icon"><img src="certificates/jack welch management institute.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="cert-body"><div class="cert-name">Operations Management Professional Certificate</div><div class="cert-issuer">Jack Welch Management Institute</div></div>
+          <span class="cert-date">Feb 2026</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon"><img src="certificates/mstconnectconsultancy_logo.jfif" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="cert-body"><div class="cert-name">Certified Lean Six Sigma Green Belt</div><div class="cert-issuer">MSTConnect Educational Consultancy</div></div>
+          <span class="cert-date">Feb 2026</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon"><img src="certificates/ICPD.webp" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="cert-body"><div class="cert-name">Certified Human Resource Professional</div><div class="cert-issuer">Institute for Continuing Professional Development</div></div>
+          <span class="cert-date">Oct 2025</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background:#fff;padding:4px;"><img src="certificates/meta-logo-2048x1972.webp" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="cert-body"><div class="cert-name">Meta Data Analyst</div><div class="cert-issuer">Meta</div></div>
+          <span class="cert-date">Aug 2025</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon"><img src="certificates/ExcelHelpline.jfif" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="cert-body"><div class="cert-name">Data Analytics (180 hours)</div><div class="cert-issuer">ExcelHelpline</div></div>
+          <span class="cert-date">Jul 2024</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background:#fff;padding:4px;"><img src="certificates/IFM.png" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="cert-body"><div class="cert-name">Certified Computational Finance Analyst</div><div class="cert-issuer">Institute of Finance and Management</div></div>
+          <span class="cert-date">Feb 2024</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background:#fff;padding:4px;"><img src="certificates/ADS Safety.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="cert-body"><div class="cert-name">BOSH for Safety Officer 2</div><div class="cert-issuer">Ayllon-Delos Reyes Safety Management Consultancy</div></div>
+          <span class="cert-date">Aug 2023</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5B. CAPABILITY DEVELOPMENT -->
+    <div class="section" id="sec-capability">
+      <p class="section-heading">Capability Development</p>
+      <div class="item-list">
+        <div class="item-card">
+          <div class="item-logo"><img src="icons/ops.gif" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="item-body">
+            <div class="item-top-row">
+              <span class="item-role">Operations, Strategy & Project Management</span>
+            </div>
+            <div class="item-meta-row">
+              <span class="item-meta">LinkedIn Learning · Polimi · MSTConnect · Jack Welch Management Institute</span>
+            </div>
+            <p class="item-desc">Process design, lean, six sigma, operations strategy, agile execution, and structured project delivery.</p>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-logo"><img src="icons/human-resources.gif" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="item-body">
+            <div class="item-top-row">
+              <span class="item-role">Talent Acquisition, HR, & Organizational Development</span>
+            </div>
+            <div class="item-meta-row">
+              <span class="item-meta">LinkedIn Learning · DevSkiller · AmazingHiring · SkillPanel · HREAP · ICPD</span>
+            </div>
+            <p class="item-desc">Recruitment strategy, employer branding, talent mapping, HR metrics, organizational design, and change management.</p>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-logo"><img src="icons/analytics.gif" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;"></div>
+          <div class="item-body">
+            <div class="item-top-row">
+              <span class="item-role">Data & Business Intelligence</span>
+            </div>
+            <div class="item-meta-row">
+              <span class="item-meta">Google · Meta · IBM · LinkedIn Learning · HackerRank · Datacamp · W3Schools</span>
+            </div>
+            <p class="item-desc">Spreadsheets, dashboards, SQL, Python, and data-driven decision making.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. WORK METHOD & PHILOSOPHY -->
+    <div class="section" id="sec-methods">
+      <p class="section-heading">Work Method &amp; Philosophy</p>
+<div class="method-grid">
+
+        <div class="method-card">
+          <div class="method-title">Start with structure, not symptoms</div>
+          <div class="method-desc">I don't jump into fixing visible issues immediately. I map how work actually flows—where delays, duplication, or breakdowns happen—before making changes.</div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-title">Work across functions, not within them</div>
+          <div class="method-desc">Having worked across HR, finance, operations, and data, I naturally connect areas that are usually treated separately. Most inefficiencies exist at those boundaries.</div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-title">Use data to guide, not to decorate</div>
+          <div class="method-desc">I rely on data to understand patterns and validate decisions—but I focus on actionable insights, not just reporting.</div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-title">Continuous improvement over one-time fixes</div>
+          <div class="method-desc">I apply Lean thinking—removing waste, simplifying processes, and improving incrementally. The goal isn't just to fix a problem once, but to make the system consistently better over time.</div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-title">Be proactive, not reactive</div>
+          <div class="method-desc">I don't wait for issues to escalate. I look for patterns early, anticipate friction points, and act before they become larger operational problems.</div>
+        </div>
+
+        <div class="method-card">
+          <div class="method-title">Prioritize outcomes over activity</div>
+          <div class="method-desc">I focus on results—efficiency, control, and clarity—not just task completion. Work should improve how the system performs, not just keep it running.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 7. ORGANIZATIONS -->
+    <div class="section" id="sec-organizations">
+      <p class="section-heading">Organizations I've Worked With</p>
+      <div class="org-ticker">
+        <div class="ticker-track">
+          <div class="ticker-logo"><img src="organizations/manytaskers.jfif" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/golden brew marketing inc.webp" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/golden dragon fastcraft builder.webp" style="width:50px;height:50px;object-fit:contain;background:#fff;"></div>
+          <div class="ticker-logo"><img src="organizations/Top C Technologies.jpg" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/Stages Center.webp" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/Target OPS.webp" style="width:50px;height:50px;object-fit:contain;background:#fff;"></div>
+          <div class="ticker-logo"><img src="organizations/curakidney.png" style="width:60px;height:60px;object-fit:contain;background:#fff;"></div>
+          <div class="ticker-logo"><img src="organizations/JAPS.jpg" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/golden bridge shipping.webp" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/malayan savings bank.webp" style="width:60px;height:60px;object-fit:contain;background:#fff;"></div>
+          <div class="ticker-logo"><img src="organizations/aboitiz foundation.jpg" style="width:60px;height:60px;object-fit:contain;background:#fff;"></div>
+          <div class="ticker-logo"><img src="organizations/manytaskers.jfif" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/golden brew marketing inc.webp" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/golden dragon fastcraft builder.webp" style="width:50px;height:50px;object-fit:contain;background:#fff;"></div>
+          <div class="ticker-logo"><img src="organizations/Top C Technologies.jpg" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/Stages Center.webp" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/Target OPS.webp" style="width:50px;height:50px;object-fit:contain;background:#fff;"></div>
+          <div class="ticker-logo"><img src="organizations/curakidney.png" style="width:60px;height:60px;object-fit:contain;background:#fff;"></div>
+          <div class="ticker-logo"><img src="organizations/JAPS.jpg" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/golden bridge shipping.webp" style="width:50px;height:50px;object-fit:contain;"></div>
+          <div class="ticker-logo"><img src="organizations/malayan savings bank.webp" style="width:60px;height:60px;object-fit:contain;background:#fff;"></div>
+          <div class="ticker-logo"><img src="organizations/aboitiz foundation.jpg" style="width:60px;height:60px;object-fit:contain;background:#fff;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. CONTACT -->
+    <div class="section" id="sec-contact">
+      <p class="section-heading">Contact</p>
+
+      <div class="contact-block">
+        <table class="contact-table">
+          <tr>
+            <td>Email</td>
+            <td><a href="mailto:derwincrisologojr@mail.com">derwincrisologojr@mail.com</a></td>
+          </tr>
+          <tr>
+            <td>Phone</td>
+            <td><a href="tel:+639050814181">+63 905 081 4181</a></td>
+          </tr>
+          <tr>
+            <td>CV</td>
+            <td><a href="docs/DERWIN CRISOLOGO JR.pdf" download>Download PDF</a></td>
+          </tr>
+          <tr>
+            <td>Location</td>
+            <td>Mandaue City, Cebu, Philippines</td>
+          </tr>
+          <tr>
+            <td>LinkedIn</td>
+            <td><a href="https://www.linkedin.com/in/derwin-crisologo-jr" target="_blank">/in/derwin-crisologo-jr</a></td>
+          </tr>
+          <tr>
+            <td>Availability</td>
+            <td>Open to opportunities</td>
+          </tr>
+          <tr>
+            </table>
+      </div>
+    </div>
+
+  </div><!-- /content-area -->
+</div><!-- /main -->
+
+<script>
+  // ── TABS (scroll to section) ──
+  const tabs = document.querySelectorAll('.rtab');
+  const sections = document.querySelectorAll('.section');
+  const contentArea = document.getElementById('contentArea');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.section;
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('sec-' + target).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // scroll spy - update active tab
+  contentArea.addEventListener('scroll', () => {
+    const scrollPos = contentArea.scrollTop + 100;
+    sections.forEach(sec => {
+      const top = sec.offsetTop;
+      const bottom = top + sec.offsetHeight;
+      if (scrollPos >= top && scrollPos < bottom) {
+        const id = sec.id.replace('sec-', '');
+        tabs.forEach(t => {
+          t.classList.toggle('active', t.dataset.section === id);
+        });
+      }
+    });
+  });
+
+  // ── CAROUSEL ──
+  const track = document.getElementById('carouselTrack');
+  const dotsContainer = document.getElementById('carouselDots');
+  const cards = track.querySelectorAll('.carousel-card');
+  const visibleCount = 2;
+  const totalSlides = Math.ceil(cards.length / visibleCount);
+  let current = 0;
+
+  // build dots
+  for (let i = 0; i < totalSlides; i++) {
+    const d = document.createElement('div');
+    d.className = 'cdot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(d);
+  }
+
+  function goTo(idx) {
+    current = Math.max(0, Math.min(idx, totalSlides - 1));
+    // compute card width including gap
+    const cardW = cards[0].getBoundingClientRect().width;
+    const gap = 12;
+    const offset = current * (cardW * visibleCount + gap * visibleCount);
+    track.style.transform = `translateX(-${current * (cardW + gap) * visibleCount}px)`;
+    document.querySelectorAll('.cdot').forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+
+  // recalc on resize
+  window.addEventListener('resize', () => goTo(current));
+</script>
+</div>
+</body>
+</html>
